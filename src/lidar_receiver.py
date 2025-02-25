@@ -34,7 +34,7 @@ def read_lidar_fifo(fifo_path, pub):
 
 def main():
     rospy.init_node('lidar_fifo_publisher', anonymous=True)
-    pub = rospy.Publisher('/lidar_points', PointCloud2, queue_size=10)
+    pub = rospy.Publisher('/lidar_points_received', PointCloud2, queue_size=10)
     fifo_path = sys.argv[1] if len(sys.argv) > 1 else "/tmp/lidar_fifo"
     read_lidar_fifo(fifo_path, pub)
 
