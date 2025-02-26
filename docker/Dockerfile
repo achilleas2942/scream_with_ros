@@ -2,9 +2,10 @@ FROM achilleas2942/ros:noetic
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-# ros required dependencies
+# Required dependencies
 RUN apt-get update && apt-get install -y \
     python3-gi \
+    tmux \
     libgstreamer1.0-dev \
     libgstreamer-plugins-base1.0-dev \
     libgstreamer-plugins-bad1.0-dev \
@@ -20,37 +21,20 @@ RUN apt-get update && apt-get install -y \
     gstreamer1.0-gtk3 \
     gstreamer1.0-qt5 \
     gstreamer1.0-pulseaudio \
-    --no-install-recommends && rm -rf /var/lib/apt/lists/* 
+    --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-COPY ./ ./simple_scream_ros_integration
+# Install RUST and Gstreamer dependencies
+RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | bash -s -- -y
+
+# Create an entrypoint script to pull the latest updates and build the workspace
 COPY entrypoint.sh /root/entrypoint.sh
+RUN chmod +x /root/entrypoint.sh
 
-# COPY ./deps/rds_poc_msgs/ ./rds_poc_msgs/
-WORKDIR /home/ros/simple_scream_ros_integration/gstscream/ros2_ws
+# Source ROS and workspace setup files
+RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
 
-# install RUST and Gstreamer dependencies
-RUN apt-get update \ 
-    && curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | bash -s -- -y
+# Set the entrypoint
+ENTRYPOINT ["/root/entrypoint.sh"]
 
-
-
-WORKDIR /home/ros/simple_scream_ros_integration/gstscream/
-
-
-
-RUN ./scripts/build.sh
-
-WORKDIR /home/ros/simple_scream_ros_integration/gstscream/ros2_ws
-
-RUN . /opt/ros/$ROS_DISTRO/setup.sh \
-    && colcon build 
-
-RUN echo "export ROS_DOMAIN_ID=2" >> ~/.bashrc
-RUN echo ". /opt/ros/humble/setup.bash" >> ~/.bashrc
-RUN echo ". /home/ros/simple_scream_ros_integration/gstscream/ros2_ws/install/local_setup.bash" >> ~/.bashrc
-
-ENTRYPOINT [ "/entrypoint.sh" ]
-
-STOPSIGNAL SIGKILL
-# CMD "echo $(pwd) && ls -l"
-
+CMD ["$(hostname -I | awk '{print $1}')", "$(hostname -I | awk '{print $1}')"]
