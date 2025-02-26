@@ -8,7 +8,7 @@ INIT_ENC_BITRATE=5000
 if (($USE_SCREAM == 1)); then
     INIT_ENC_BITRATE=500
     
-    SCREAMTX0="queue ! screamtx name=\"screamtx0\" params=\" -forceidr -initrate $INIT_ENC_BITRATE -minrate 200 -maxrate 8000\" ! queue !"
+    SCREAMTX0="queue name=pre_scream_queue ! screamtx name=\"screamtx0\" params=\" -forceidr -initrate $INIT_ENC_BITRATE -minrate 200 -maxrate 8000\" ! queue name=post_scream_queue !"
     SCREAMTX0_RTCP="screamtx0.rtcp_sink screamtx0.rtcp_src !"
 else
     SCREAMTX0=""
@@ -16,11 +16,11 @@ else
 fi
 
 # Updated for LiDAR streaming
-LIDARSRC="udpsrc port=4000 caps=\"application/x-raw,media=lidar\" ! queue !"
+LIDARSRC="udpsrc port=4000 caps=\"application/x-raw,media=lidar\" ! queue name=lidar_queue !"
 
 export SENDPIPELINE="rtpbin name=r \
 $LIDARSRC $SCREAMTX0 r.send_rtp_sink_0 r.send_rtp_src_0 ! udpsink host=$RECEIVER_IP port=$PORT0_RTP sync=false $SET_ECN \
-   udpsrc port=$PORT0_RTCP address=127.0.0.1 ! queue ! $SCREAMTX0_RTCP r.recv_rtcp_sink_0 \
+   udpsrc port=$PORT0_RTCP address=127.0.0.1 ! queue name=rtcp_queue ! $SCREAMTX0_RTCP r.recv_rtcp_sink_0 \
    r.send_rtcp_src_0 ! udpsink host=$RECEIVER_IP port=$PORT0_RTCP sync=false async=false \
 "
 
