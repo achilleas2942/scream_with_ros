@@ -27,7 +27,7 @@ udpsrc port=$PORT0_RTP address=$RECEIVER_IP $RETRIEVE_ECN !
  $SCREAMRX0_RTCP udpsrc port=$PORT0_RTCP ! r.recv_rtcp_sink_0 "
 
 export GST_DEBUG="screamrx:2"
-killall -9 scream_receiver
+pkill -9 scream_receiver
 $SCREAM_TARGET_DIR/scream_receiver &
 
 # Start the Python script to read from FIFO and publish to ROS
