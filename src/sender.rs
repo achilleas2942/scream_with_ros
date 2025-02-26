@@ -51,6 +51,7 @@ fn start(main_loop: &glib::MainLoop, args: Arguments) -> Result<(), Error> {
     let pls = args.sendpipeline;
 
     println!("Pipeline: {}", pls);
+    let n_encoders = pls.matches("name=encoder").count();
     if !pls.contains("application/x-raw,media=lidar") {
         println!("Warning: The pipeline does not contain LiDAR data format.");
     }
