@@ -40,10 +40,13 @@ rm /root/catkin_ws/src/scream/gstscream/scripts/build.sh
 rm /root/catkin_ws/src/scream/gstscream/scripts/env.sh
 rm /root/catkin_ws/src/scream/gstscream/src/sender.rs
 rm /root/catkin_ws/src/scream/gstscream/src/sender_utils.rs
+rm /root/catkin_ws/src/scream/gstscream/src/lib.rs
 cp /root/catkin_ws/src/scream_with_ros/src/build.sh /root/catkin_ws/src/scream/gstscream/scripts/build.sh
 cp /root/catkin_ws/src/scream_with_ros/src/env.sh /root/catkin_ws/src/scream/gstscream/scripts/env.sh
 cp /root/catkin_ws/src/scream_with_ros/src/sender.rs /root/catkin_ws/src/scream/gstscream/src/sender.rs
 cp /root/catkin_ws/src/scream_with_ros/src/sender_utils.rs /root/catkin_ws/src/scream/gstscream/src/sender_utils.rs
+cp /root/catkin_ws/src/scream_with_ros/src/lib.rs /root/catkin_ws/src/scream/gstscream/src/lib.rs
+cp /root/catkin_ws/src/scream_with_ros/src/gstlidar.rs /root/catkin_ws/src/scream/gstscream/src/gstlidar.rs
 
 # Building gstscream and sample applications
 chmod +x /root/catkin_ws/src/scream/gstscream/scripts/build.sh
