@@ -20,9 +20,9 @@ LIDARSRC="udpsrc port=4000 caps=\"application/x-raw,media=lidar\" ! queue name=l
 
 export SENDPIPELINE="rtpbin name=r \
 $LIDARSRC $SCREAMTX0 r.send_rtp_sink_0 r.send_rtp_src_0 ! udpsink host=$RECEIVER_IP port=$PORT0_RTP sync=false $SET_ECN \
-   udpsrc port=$PORT0_RTCP address=127.0.0.1 ! queue name=rtcp_queue ! $SCREAMTX0_RTCP r.recv_rtcp_sink_0 \
-   r.send_rtcp_src_0 ! udpsink host=$RECEIVER_IP port=$PORT0_RTCP sync=false async=false \
-"
+    udpsrc port=$PORT0_RTCP address=127.0.0.1 ! queue name=rtcp_queue ! $SCREAMTX0_RTCP r.recv_rtcp_sink_0 \
+    r.send_rtcp_src_0 ! udpsink host=$RECEIVER_IP port=$PORT0_RTCP sync=false async=false \
+    "
 
 export GST_DEBUG="2,screamtx:2"
 

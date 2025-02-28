@@ -11,15 +11,15 @@ if (($ECN_ENABLED == 1)); then
     export GST_PLUGIN_PATH=$MY_GST_INSTALL/lib/x86_64-linux-gnu
     export GST_PLUGIN_PATH=$GST_PLUGIN_PATH:$MY_GST_INSTALL/lib/x86_64-linux-gnu/gstreamer-1.0
     export GST_PLUGIN_PATH=$GST_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gstreamer-1.0
-
+    
     export LD_LIBRARY_PATH=$MY_GST_INSTALL/lib/x86_64-linux-gnu
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MY_GST_INSTALL/lib/x86_64-linux-gnu/gstreamer-1.0
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gstreamer-1.0
-
+    
     export PATH=$MY_GST_INSTALL/bin:$PATH
     export PKG_CONFIG_PATH=$MY_GST_INSTALL/lib/x86_64-linux-gnu/pkgconfig
     export PYTHONPATH=${PYTHONPATH}:$MY_GST_INSTALL/lib/python3/site-packages/
-
+    
     LP=$(pkg-config --libs-only-L gstreamer-1.0 )
     export RUSTFLAGS="$LP $RUSTFLAGS"
 fi
@@ -32,11 +32,10 @@ export LD_LIBRARY_PATH=$SCREAMLIB_DIR:$LD_LIBRARY_PATH
 echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 echo "GST_PLUGIN_PATH=$GST_PLUGIN_PATH"
 
-# LiDAR Data Transmission Settings
 SENDER_IP=127.0.0.1
 RECEIVER_IP=127.0.0.1
 
-PORT0_RTP=30112  # Ensure correct port for LiDAR
+PORT0_RTP=30112
 PORT0_RTCP=30113
 
 USE_SCREAM=1

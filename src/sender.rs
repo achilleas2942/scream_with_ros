@@ -17,23 +17,18 @@ mod sender_util;
 #[command(version, about, long_about = None)]
 struct Arguments {
     #[arg(short, long, default_value_t = false)]
-    /// Produces verbose logs.
     verbose: bool,
 
     #[arg(short, long)]
-    /// Rate multiplication factor.
     ratemultiply: Option<i32>,
 
     #[arg(env)]
-    /// The gstreamer pipeline to use for the sender application.
     sendpipeline: String,
 
     #[arg(env, default_value_t = 1000)]
-    /// The logging interval for sender statistics.
     sender_stats_timer: u32,
 
     #[arg(env, default_value = "sender_scream_stats.csv")]
-    /// The logging interval for sender statistics.
     sender_stats_file_name: std::path::PathBuf,
 }
 

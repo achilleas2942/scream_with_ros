@@ -20,11 +20,11 @@ mkfifo $FIFO_PATH
 
 LIDAR_PROCESS="filesink location=$FIFO_PATH sync=false"
 
-export RECVPIPELINE="rtpbin latency=10 name=r 
-udpsrc port=$PORT0_RTP address=$RECEIVER_IP $RETRIEVE_ECN ! 
- queue $SCREAMRX0 ! application/x-raw,media=lidar ! r.recv_rtp_sink_0 r. ! $QUEUE ! $LIDAR_PROCESS 
- r.send_rtcp_src_0 ! funnel name=f0 ! queue ! udpsink host=$SENDER_IP port=$PORT0_RTCP sync=false async=false 
- $SCREAMRX0_RTCP udpsrc port=$PORT0_RTCP ! r.recv_rtcp_sink_0 "
+export RECVPIPELINE="rtpbin latency=10 name=r
+    udpsrc port=$PORT0_RTP address=$RECEIVER_IP $RETRIEVE_ECN !
+    queue $SCREAMRX0 ! application/x-raw,media=lidar ! r.recv_rtp_sink_0 r. ! $QUEUE ! $LIDAR_PROCESS
+    r.send_rtcp_src_0 ! funnel name=f0 ! queue ! udpsink host=$SENDER_IP port=$PORT0_RTCP sync=false async=false
+    $SCREAMRX0_RTCP udpsrc port=$PORT0_RTCP ! r.recv_rtcp_sink_0 "
 
 export GST_DEBUG="screamrx:2"
 pkill -9 scream_receiver

@@ -7,18 +7,16 @@ mod screamtx;
 mod screamtxbw;
 mod gstlidar;
 
-// Plugin entry point: Registers all elements (SCReAM and LiDAR support)
 fn plugin_init(plugin: &gst::Plugin) -> Result<(), glib::BoolError> {
     #[cfg(not(feature = "screamrx-only"))]
     screamtx::register(plugin)?;
     #[cfg(all(not(feature = "screamrx-only"), feature = "screamtxbw-enabled"))]
     screamtxbw::register(plugin)?;
     screamrx::register(plugin)?;
-    gstlidar::register(plugin)?;  // ✅ Use `register()` instead of `LidarTransform::register()`
+    gstlidar::register(plugin)?;
     Ok(())
 }
 
-// ✅ Use **only one** `plugin_define!` macro
 gst::plugin_define!(
     gstscream,
     "GStreamer SCReAM Plugin with LiDAR support",
