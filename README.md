@@ -32,6 +32,7 @@ This project includes a Docker setup for easy deployment.
 #### **Build the Docker Image**
 Run the following script to build the Docker image:
 ```sh
+cd docker/
 ./docker/create_image.sh
 ```
 This script will build the necessary dependencies  
