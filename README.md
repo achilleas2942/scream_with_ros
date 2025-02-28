@@ -33,14 +33,14 @@ This project includes a Docker setup for easy deployment.
 Run the following script to build the Docker image:
 ```sh
 cd docker/
-./docker/create_image.sh
+./create_image.sh
 ```
 This script will build the necessary dependencies  
 
 #### **Run the Docker Container**
 Once the image is built, start the container with:
 ```sh
-./docker/run_container.sh
+./run_container.sh
 ```
 This will:
 - Run the container with the necessary mounts and environment variables  
