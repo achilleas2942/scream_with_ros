@@ -1,6 +1,7 @@
 use gst::glib;
 use gst_base::BaseTransform;
 use gst_base::subclass::prelude::*;
+use gst_base::subclass::BaseTransformMode;
 use gst::subclass::prelude::*;
 use gst::prelude::*;
 
@@ -24,7 +25,7 @@ mod imp {
     }
 
     impl ObjectImpl for LidarTransform {}
-    impl GstObjectImpl for LidarTransform {}  // ✅ Add this
+    impl GstObjectImpl for LidarTransform {}
     impl ElementImpl for LidarTransform {}
     impl BaseTransformImpl for LidarTransform {
         const MODE: BaseTransformMode = BaseTransformMode::AlwaysInPlace;
@@ -34,5 +35,5 @@ mod imp {
 }
 
 pub fn register(plugin: &gst::Plugin) -> Result<(), glib::BoolError> {
-    gst::Element::register(Some(plugin), "lidartransform", gst::Rank::None, LidarTransform::static_type())
+    gst::Element::register(Some(plugin), "lidartransform", gst::Rank::NONE, LidarTransform::static_type())
 }
