@@ -34,8 +34,7 @@ Run the following script to build the Docker image:
 ```sh
 ./docker/create_image.sh
 ```
-This script will:
-- Build the necessary dependencies  
+This script will build the necessary dependencies  
 
 #### **Run the Docker Container**
 Once the image is built, start the container with:
