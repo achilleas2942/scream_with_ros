@@ -29,7 +29,7 @@ def range_projection(points: np.ndarray, proj_W=1280, proj_H=720):
 
 class LidarToImage:
     def __init__(self):
-        rospy.init_node("lidar_to_image_node", anonymous=True)
+        rospy.init_node("lidar2image_node", anonymous=True)
         self.bridge = CvBridge()
         self.pub = rospy.Publisher("/images", Image, queue_size=10)
         self.sub = rospy.Subscriber("/lidar_points", PointCloud2, self.callback)
