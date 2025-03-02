@@ -19,6 +19,7 @@ if [ -d "tb_cbf" ]; then
     cd tb_cbf && git pull && cd ..
 else
     git clone https://github.com/achilleas2942/scream_with_ros.git
+    cd /root/catkin_ws/src/scream_with_ros && git checkout lidar2image
 fi
 
 # Build the workspace
@@ -32,10 +33,12 @@ source /root/catkin_ws/devel/setup.bash
 export ROS_MASTER_URI=http://"$ROS_MASTER_IP":11311
 export ROS_IP="$ROS_IP"
 
-cp /root/catkin_ws/src/scream_with_ros/src/lidar_receiver.py /root/catkin_ws/src/scream/gstscream/scripts/lidar_receiver.py
-cp /root/catkin_ws/src/scream_with_ros/src/lidar_receiver.sh /root/catkin_ws/src/scream/gstscream/scripts/lidar_receiver.sh
-cp /root/catkin_ws/src/scream_with_ros/src/lidar_sender.py /root/catkin_ws/src/scream/gstscream/scripts/lidar_sender.py
-cp /root/catkin_ws/src/scream_with_ros/src/lidar_sender.sh /root/catkin_ws/src/scream/gstscream/scripts/lidar_sender.sh
+cp /root/catkin_ws/src/scream_with_ros/src/image_sender.py /root/catkin_ws/src/scream/gstscream/scripts/image_sender.py
+cp /root/catkin_ws/src/scream_with_ros/src/image_sender.sh /root/catkin_ws/src/scream/gstscream/scripts/image_sender.sh
+cp /root/catkin_ws/src/scream_with_ros/src/image_sender.py /root/catkin_ws/src/scream/gstscream/scripts/image_sender.py
+cp /root/catkin_ws/src/scream_with_ros/src/image_sender.sh /root/catkin_ws/src/scream/gstscream/scripts/image_sender.sh
+cp /root/catkin_ws/src/scream_with_ros/src/lidar2image.py /root/catkin_ws/src/scream/gstscream/scripts/lidar2image.py
+cp /root/catkin_ws/src/scream_with_ros/src/image2lidar.py /root/catkin_ws/src/scream/gstscream/scripts/image2lidar.py
 
 # Building gstscream and sample applications
 chmod +x /root/catkin_ws/src/scream/gstscream/scripts/build.sh
