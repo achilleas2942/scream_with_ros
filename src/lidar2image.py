@@ -31,7 +31,7 @@ class LidarToImage:
     def __init__(self):
         rospy.init_node("lidar_to_image_node", anonymous=True)
         self.bridge = CvBridge()
-        self.pub = rospy.Publisher("/image", Image, queue_size=10)
+        self.pub = rospy.Publisher("/images", Image, queue_size=10)
         self.sub = rospy.Subscriber("/lidar_points", PointCloud2, self.callback)
 
     def callback(self, msg):
