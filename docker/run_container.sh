@@ -29,5 +29,5 @@ docker run --rm --privileged -it \
     --env="QT_X11_NO_MITSHM=1" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --name="scream-with-ros-lidar2image" \
-    ghcr.io/achilleas2942/scream-with-ros:latest \
+    ghcr.io/achilleas2942/scream-with-ros:lidar2image \
     "$ROS_MASTER_IP" "$ROS_IP"
