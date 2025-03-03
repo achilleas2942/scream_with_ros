@@ -5,6 +5,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 # Required dependencies
 RUN apt-get update && apt-get install -y \
     python3-gi \
+    ros-noetic-cv-bridge \
     tmux \
     libgstreamer1.0-dev \
     libgstreamer-plugins-base1.0-dev \
