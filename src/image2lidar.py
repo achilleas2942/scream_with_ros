@@ -4,7 +4,7 @@ import numpy as np
 from sensor_msgs.msg import Image, PointCloud2
 from sensor_msgs import point_cloud2
 from cv_bridge import CvBridge
-from lidar2image import range_projection
+from lidar2image import undo_projection
 
 
 class ImageToLidar:
@@ -20,7 +20,7 @@ class ImageToLidar:
         """
         try:
             range_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
-            point_cloud = range_projection(range_image)
+            point_cloud = undo_projection(range_image)
 
             # Convert point cloud to ROS message
             header = msg.header
