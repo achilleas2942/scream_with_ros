@@ -13,15 +13,17 @@ else
     SCREAMRX0_RTCP=""
 fi
 
-# Updated: Appsink to send frames to Python script
+# Save images in mounted volume
+IMAGE_SAVE_DIR="/images"
+mkdir -p $IMAGE_SAVE_DIR
+
 export RECVPIPELINE="rtpbin latency=10 name=r \
-    udpsrc port=$PORT0_RTP address=$RECEIVER_IP $RETRIEVE_ECN ! \
-    queue $SCREAMRX0 ! application/x-rtp, media=video, encoding-name=H${ENC_ID}, clock-rate=90000 ! r.recv_rtp_sink_0 r. \
-    ! rtph${ENC_ID}depay ! h${ENC_ID}parse ! $DECODER name=videodecoder0 ! videoconvert ! video/x-raw,format=BGR ! appsink name=mysink emit-signals=true sync=false \
-    r.send_rtcp_src_0 ! funnel name=f0 ! queue ! udpsink host=$SENDER_IP port=$PORT0_RTCP sync=false async=false \
-    $SCREAMRX0_RTCP udpsrc port=$PORT0_RTCP ! r.recv_rtcp_sink_0 \
-    "
+udpsrc port=$PORT0_RTP address=$RECEIVER_IP $RETRIEVE_ECN ! \
+ queue $SCREAMRX0 ! application/x-rtp, media=video, encoding-name=H${ENC_ID}, clock-rate=90000 ! r.recv_rtp_sink_0 r. ! rtph${ENC_ID}depay ! h${ENC_ID}parse ! $DECODER name=videodecoder0 ! videoconvert ! jpegenc ! multifilesink location=$IMAGE_SAVE_DIR/frame_%05d.jpg \
+ r.send_rtcp_src_0 ! funnel name=f0 ! queue ! udpsink host=$SENDER_IP port=$PORT0_RTCP sync=false async=false \
+ $SCREAMRX0_RTCP udpsrc port=$PORT0_RTCP ! r.recv_rtcp_sink_0 \
+"
 
 export GST_DEBUG="screamrx:2"
-pkill -9 scream_receiver
-$SCREAM_TARGET_DIR/scream_receiver &
+kill -9 scream_receiver
+$SCREAM_TARGET_DIR/scream_receiver

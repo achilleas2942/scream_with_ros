@@ -16,36 +16,34 @@ class GStreamerROSImageReceiver:
         self.bridge = CvBridge()
         self.image_pub = rospy.Publisher("/received_images", Image, queue_size=10)
 
-        # Create GStreamer pipeline
+        # Create GStreamer pipeline with shmsrc instead of appsink
         self.pipeline = Gst.parse_launch(
-            "appsrc name=mysource is-live=true ! appsink name=mysink emit-signals=true"
+            "shmsrc socket-path=/tmp/gst_shm do-timestamp=true is-live=true ! "
+            "video/x-raw,format=BGR ! videoconvert ! appsink name=mysink emit-signals=true"
         )
 
         self.appsink = self.pipeline.get_by_name("mysink")
         self.appsink.set_property("emit-signals", True)
         self.appsink.connect("new-sample", self.on_new_sample)
 
-        # Start pipeline
+        # Start the pipeline
         self.pipeline.set_state(Gst.State.PLAYING)
 
     def on_new_sample(self, sink):
         """
-        Callback for handling new frames from GStreamer pipeline.
+        Callback function for handling new frames from GStreamer pipeline.
         """
         sample = sink.emit("pull-sample")
         if sample:
             buf = sample.get_buffer()
             caps = sample.get_caps()
-            _, height, width = caps.get_structure(0).get_int(
-                "height"
-            ), caps.get_structure(0).get_int("width")
+            width = caps.get_structure(0).get_int("width")[1]
+            height = caps.get_structure(0).get_int("height")[1]
 
             # Convert buffer to numpy array
             success, map_info = buf.map(Gst.MapFlags.READ)
             if success:
-                frame = np.frombuffer(map_info.data, dtype=np.uint8).reshape(
-                    height, width, 3
-                )
+                frame = np.frombuffer(map_info.data, dtype=np.uint8).reshape(height, width, 3)
                 buf.unmap(map_info)
 
                 # Convert to ROS Image message and publish

@@ -23,11 +23,12 @@ if [[ "$ROS_IP" == "$ROS_MASTER_IP" ]]; then
 fi
 
 # Run the Docker container with the appropriate environment variables
-docker run --rm --privileged -it \
+docker run --rm --privileged -d \
     --net=host \
     --env="DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    --volume="/root/c/vision8Detection/images:/images" \
     --name="scream-with-ros-video" \
     ghcr.io/achilleas2942/scream-with-ros:video \
     "$ROS_MASTER_IP" "$ROS_IP"

@@ -3,7 +3,6 @@ import rospy
 import numpy as np
 import gi
 from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
 from gi.repository import Gst
 
 gi.require_version("Gst", "1.0")
@@ -15,13 +14,11 @@ class GStreamerROSLidarBridge:
 
         # Initialize GStreamer
         Gst.init(None)
-        self.bridge = CvBridge()
 
         # Define the GStreamer pipeline for streaming serialized LiDAR data
         pipeline_str = """
-            appsrc name=mysource is-live=true format=TIME caps=video/x-raw,format=BGR,width=1280,height=720,framerate=30/1 !
-            videoconvert ! x264enc bitrate=500 tune=zerolatency speed-preset=ultrafast ! rtph264pay ! 
-            udpsink host=127.0.0.1 port=3150
+            appsrc name=mysource is-live=true format=TIME caps=video/x-raw,format=RGB,width=1280,height=720,framerate=30/1 !
+            videoconvert ! x264enc tune=zerolatency ! rtph264pay ! udpsink host=127.0.0.1 port=3150
         """
         self.pipeline = Gst.parse_launch(pipeline_str)
         self.appsrc = self.pipeline.get_by_name("mysource")
@@ -30,7 +27,7 @@ class GStreamerROSLidarBridge:
 
     def image_callback(self, msg):
         try:
-            frame = self.bridge.imgmsg_to_cv2(msg, "bgr8")  # Ensure BGR format
+            frame = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, 3)
             buf = Gst.Buffer.new_wrapped(frame.tobytes())
             retval = self.appsrc.emit("push-buffer", buf)
             if retval != Gst.FlowReturn.OK:
