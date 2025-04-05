@@ -37,8 +37,6 @@ cp /root/catkin_ws/src/scream_with_ros/src/image_sender.py /root/catkin_ws/src/s
 cp /root/catkin_ws/src/scream_with_ros/src/image_sender.sh /root/catkin_ws/src/scream/gstscream/scripts/image_sender.sh
 cp /root/catkin_ws/src/scream_with_ros/src/image_receiver.py /root/catkin_ws/src/scream/gstscream/scripts/image_receiver.py
 cp /root/catkin_ws/src/scream_with_ros/src/image_receiver.sh /root/catkin_ws/src/scream/gstscream/scripts/image_receiver.sh
-cp /root/catkin_ws/src/scream_with_ros/src/lidar2image.py /root/catkin_ws/src/scream/gstscream/scripts/lidar2image.py
-cp /root/catkin_ws/src/scream_with_ros/src/image2lidar.py /root/catkin_ws/src/scream/gstscream/scripts/image2lidar.py
 
 # Building gstscream and sample applications
 chmod +x /root/catkin_ws/src/scream/gstscream/scripts/build.sh
